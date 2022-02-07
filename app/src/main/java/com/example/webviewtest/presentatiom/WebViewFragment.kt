@@ -31,23 +31,29 @@ class WebViewFragment() : Fragment() {
 
         val user = requireActivity().getSharedPreferences("hasVisited", Context.MODE_PRIVATE)
         val visited = user.getBoolean("hasVisited", false)
-        if (!visited){
-            viewModel.link.observe(this){
-                webViewSetup(it)
+
+        if (!visited) {
+            viewModel.getLink.observe(this) {
+                it?.let {
+                    it.link?.let { it1 -> webViewSetup(it1) }
+                }
             }
             user.edit().putBoolean("hasVisited", true).apply()
         } else {
-            viewModel.home.observe(this){
-                webViewSetup(it)
+            viewModel.getLink.observe(this) {
+                it?.let {
+                    it.home?.let { it1 -> webViewSetup(it1) }
+                }
             }
         }
     }
+
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun webViewSetup(site: String) {
         binding.webView.webViewClient = WebViewClient()
         binding.webView.apply {
-            loadUrl(site)
+            binding.webView.loadUrl(site)
             settings.javaScriptEnabled = true
         }
     }

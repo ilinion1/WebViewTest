@@ -10,11 +10,8 @@ import com.example.webviewtest.data.network.model.LinkContainerDto
 @Dao
 interface WebViewDao {
 
-    @Query("SELECT * FROM all_link WHERE link")
+    @Query("SELECT * FROM all_link")
     fun getLink(): LiveData<LinkContainerDto>
-
-    @Query("SELECT * FROM all_link WHERE home")
-    fun getHome(): LiveData<LinkContainerDto>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDatabase(linkContainerDto: LinkContainerDto)
